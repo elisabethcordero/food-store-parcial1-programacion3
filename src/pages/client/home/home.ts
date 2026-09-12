@@ -2,6 +2,7 @@ import "./home.css";
 import type { IProduct } from "../../../types/product";
 import { PRODUCTS, getCategories } from "../../../data/data";
 import { logout } from "../../../utils/auth";
+import { addToCart } from "../../../utils/cart";
 
 const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
 buttonLogout.addEventListener("click", () => {
@@ -34,6 +35,7 @@ const cargarProductos = (): void => {
     `;
     const botonAgregar = article.querySelector(".btn-agregar") as HTMLButtonElement;
     botonAgregar.addEventListener("click", () => {
+      addToCart(producto);
       alert(`"${producto.nombre}" ha sido agregado al carrito.`);
     });
     contenedorProductos.appendChild(article);
