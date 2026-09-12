@@ -1,8 +1,7 @@
-import type { IProducto } from "../../../types/IProducto";
+import type { IProduct } from "../types/product";
+import type { ICategoria } from "../types/categoria";
 
-export const categorias: string[] = ["Hamburguesas", "Pizzas", "Papas Fritas", "Bebidas"];
-
-export const productos: IProducto[] = [
+export const PRODUCTS: IProduct[] = [
   {
     id: 1,
     nombre: "Hamburguesa de la Casa",
@@ -68,3 +67,13 @@ export const productos: IProducto[] = [
     categoria: "Bebidas"
   }
 ];
+
+// Arma la lista de categorías automáticamente a partir de los productos,
+// para no tener que escribirlas dos veces en lugares distintos
+export const getCategories = (): ICategoria[] => {
+  const nombresUnicos = [...new Set(PRODUCTS.map((producto) => producto.categoria))];
+  return nombresUnicos.map((nombre, index) => ({
+    id: index + 1,
+    nombre,
+  }));
+};

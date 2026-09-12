@@ -1,6 +1,6 @@
 import "./home.css";
-import type { IProducto } from "../../../types/IProducto";
-import { categorias, productos } from "./data";
+import type { IProduct } from "../../../types/product";
+import { PRODUCTS, getCategories } from "../../../data/data";
 import { logout } from "../../../utils/auth";
 
 const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
@@ -10,9 +10,10 @@ buttonLogout.addEventListener("click", () => {
 
 const cargarCategorias = (): void => {
   const contenedorCategorias = document.getElementById("lista-categorias") as HTMLUListElement;
+  const categorias = getCategories();
   categorias.forEach((categoria) => {
     const li = document.createElement("li");
-    li.innerHTML = `<a href="#">${categoria}</a>`;
+    li.innerHTML = `<a href="#">${categoria.nombre}</a>`;
     contenedorCategorias.appendChild(li);
   });
 };
@@ -20,7 +21,7 @@ cargarCategorias();
 
 const cargarProductos = (): void => {
   const contenedorProductos = document.getElementById("contenedor-productos") as HTMLElement;
-  productos.forEach((producto: IProducto) => {
+  PRODUCTS.forEach((producto: IProduct) => {
     const article = document.createElement("article");
     article.classList.add("producto-card");
     article.innerHTML = `
