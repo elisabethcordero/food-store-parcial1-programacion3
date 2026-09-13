@@ -11,9 +11,13 @@ buttonLogout.addEventListener("click", () => {
 const contenedorProductos = document.getElementById("contenedor-productos") as HTMLElement;
 const inputBuscar = document.getElementById("buscarProducto") as HTMLInputElement;
 const formBuscar = document.getElementById("form-buscar") as HTMLFormElement;
+const tituloProductos = document.getElementById("titulo-productos") as HTMLHeadingElement;
 let categoriaActiva = "Todas";
 
 const dibujarProductos = (): void => {
+  const hayFiltroActivo = categoriaActiva !== "Todas" || inputBuscar.value.trim() !== "";
+  tituloProductos.textContent = hayFiltroActivo ? "Resultados de la búsqueda" : "Productos Destacados";
+
   contenedorProductos.innerHTML = "";
 
   const productosFiltrados = PRODUCTS.filter((producto) => {
