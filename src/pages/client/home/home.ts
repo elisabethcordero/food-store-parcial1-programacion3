@@ -1,7 +1,7 @@
 import "./home.css";
 import { PRODUCTS, getCategories } from "../../../data/data";
 import { logout } from "../../../utils/auth";
-import { addToCart } from "../../../utils/cart";
+import { addToCart, decreaseQuantity, getCantidadEnCarrito, increaseQuantity } from "../../../utils/cart";
 
 const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
 buttonLogout.addEventListener("click", () => {
@@ -34,19 +34,50 @@ const dibujarProductos = (): void => {
   productosFiltrados.forEach((producto) => {
     const article = document.createElement("article");
     article.classList.add("producto-card");
+
+    const cantidadEnCarrito = getCantidadEnCarrito(producto.id);
+
+    const controlesCarrito =
+      cantidadEnCarrito === 0
+        ? `<button class="btn-agregar" data-id="${producto.id}">Agregar al carrito</button>`
+        : `
+          <div class="control-cantidad">
+            <button class="btn-restar" data-id="${producto.id}">-</button>
+            <span class="cantidad-numero">${cantidadEnCarrito}</span>
+            <button class="btn-sumar" data-id="${producto.id}">+</button>
+          </div>
+        `;
+
     article.innerHTML = `
         <img src="${producto.imagen}" alt="${producto.nombre}">
         <h3>${producto.nombre}</h3>
         <p>${producto.descripcion}</p>
         <p class="precio">Precio: $${producto.precio.toLocaleString()}</p>
         <button class="btn-detalles" data-id="${producto.id}">Detalles del producto</button>
-        <button class="btn-agregar" data-id="${producto.id}">Agregar al carrito</button>
+        ${controlesCarrito}
     `;
-    const botonAgregar = article.querySelector(".btn-agregar") as HTMLButtonElement;
-    botonAgregar.addEventListener("click", () => {
-      addToCart(producto);
-      alert(`"${producto.nombre}" ha sido agregado al carrito.`);
-    });
+
+    if (cantidadEnCarrito === 0) {
+      const botonAgregar = article.querySelector(".btn-agregar") as HTMLButtonElement;
+      botonAgregar.addEventListener("click", () => {
+        addToCart(producto);
+        dibujarProductos();
+      });
+    } else {
+      const botonRestar = article.querySelector(".btn-restar") as HTMLButtonElement;
+      const botonSumar = article.querySelector(".btn-sumar") as HTMLButtonElement;
+
+      botonRestar.addEventListener("click", () => {
+        decreaseQuantity(producto.id);
+        dibujarProductos();
+      });
+
+      botonSumar.addEventListener("click", () => {
+        increaseQuantity(producto.id);
+        dibujarProductos();
+      });
+    }
+
     contenedorProductos.appendChild(article);
   });
 };
@@ -54,12 +85,21 @@ const dibujarProductos = (): void => {
 const cargarCategorias = (): void => {
   const contenedorCategorias = document.getElementById("lista-categorias") as HTMLUListElement;
 
+  const marcarActiva = (linkClickeado: HTMLAnchorElement): void => {
+    const todosLosLinks = contenedorCategorias.querySelectorAll("a");
+    todosLosLinks.forEach((link) => link.classList.remove("categoria-activa"));
+    linkClickeado.classList.add("categoria-activa");
+  };
+
   const liTodas = document.createElement("li");
-  liTodas.innerHTML = `<a href="#">Todas</a>`;
-  liTodas.addEventListener("click", (e) => {
+  liTodas.innerHTML = `<a href="#" class="categoria-activa">Todas</a>`;
+  const linkTodas = liTodas.querySelector("a") as HTMLAnchorElement;
+  linkTodas.addEventListener("click", (e) => {
     e.preventDefault();
     categoriaActiva = "Todas";
+    inputBuscar.value = "";
     dibujarProductos();
+    marcarActiva(linkTodas);
   });
   contenedorCategorias.appendChild(liTodas);
 
@@ -67,10 +107,13 @@ const cargarCategorias = (): void => {
   categorias.forEach((categoria) => {
     const li = document.createElement("li");
     li.innerHTML = `<a href="#">${categoria.nombre}</a>`;
-    li.addEventListener("click", (e) => {
+    const link = li.querySelector("a") as HTMLAnchorElement;
+    link.addEventListener("click", (e) => {
       e.preventDefault();
       categoriaActiva = categoria.nombre;
+      inputBuscar.value = "";
       dibujarProductos();
+      marcarActiva(link);
     });
     contenedorCategorias.appendChild(li);
   });

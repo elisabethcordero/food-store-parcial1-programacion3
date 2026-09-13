@@ -7,7 +7,10 @@
 </head>
 <body>
    <header>
-    <h1>Food Store</h1>
+    <div class="logo">
+        <span class="logo-icono">🍽️</span>
+        <h1>Food Store</h1>
+    </div>
     <nav>
         <ul>
             <li><a href="#">Inicio</a></li>
@@ -18,22 +21,23 @@
     <button id="logoutButton">Cerrar sesión</button>
    </header>
    <hr>
-   <aside>
-    <h2>Categorías</h2>
-    <ul id="lista-categorias">
-    </ul>
-   </aside>
-   <main>
-    <form id="form-buscar" action="">
+   <form id="form-buscar" action="">
         <label for="buscarProducto">Buscar productos:</label>
         <input type="text" id="buscarProducto" placeholder="Ej: Hamburguesa">
         <button type="submit">Buscar</button>
-    </form>
-
-    <h2 id="titulo-productos">Productos Destacados</h2>
-    <section id="contenedor-productos">
-    </section>
-   </main>
+   </form>
+   <div class="layout">
+    <aside>
+        <h2>Categorías</h2>
+        <ul id="lista-categorias">
+        </ul>
+    </aside>
+    <main>
+        <h2 id="titulo-productos">Productos Destacados</h2>
+        <section id="contenedor-productos">
+        </section>
+    </main>
+   </div>
    <footer>
     <p>&copy; 2026 Food Store. Todos los derechos reservados.</p>
     <strong>Contacto:</strong>

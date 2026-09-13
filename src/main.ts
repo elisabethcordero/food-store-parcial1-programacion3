@@ -1,3 +1,4 @@
+import "./style.css";
 import { checkAuthUser } from "./utils/auth";
 
 const path = window.location.pathname;

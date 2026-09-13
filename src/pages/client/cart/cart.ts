@@ -1,4 +1,5 @@
-import { getCart, getCartTotal } from "../../../utils/cart";
+import "./cart.css";
+import { decreaseQuantity, getCart, getCartTotal, increaseQuantity, removeFromCart } from "../../../utils/cart";
 import { logout } from "../../../utils/auth";
 
 const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
@@ -19,16 +20,49 @@ const cargarCarrito = (): void => {
   }
 
   contenedorCarrito.innerHTML = "";
+
   cart.forEach((item) => {
     const div = document.createElement("div");
     div.classList.add("carrito-item");
     div.innerHTML = `
-      <p>${item.producto.nombre} - $${item.producto.precio.toLocaleString()} x ${item.cantidad}</p>
+      <img src="${item.producto.imagen}" alt="${item.producto.nombre}">
+      <div class="carrito-item-info">
+        <h3>${item.producto.nombre}</h3>
+        <p class="precio-unitario">Precio unitario: $${item.producto.precio.toLocaleString()}</p>
+      </div>
+      <div class="control-cantidad">
+        <button class="btn-restar" data-id="${item.producto.id}">-</button>
+        <span class="cantidad-numero">${item.cantidad}</span>
+        <button class="btn-sumar" data-id="${item.producto.id}">+</button>
+      </div>
+      <p class="subtotal">$${(item.producto.precio * item.cantidad).toLocaleString()}</p>
+      <button class="btn-eliminar" data-id="${item.producto.id}">Eliminar</button>
     `;
+
+    const botonRestar = div.querySelector(".btn-restar") as HTMLButtonElement;
+    const botonSumar = div.querySelector(".btn-sumar") as HTMLButtonElement;
+    const botonEliminar = div.querySelector(".btn-eliminar") as HTMLButtonElement;
+
+    botonRestar.addEventListener("click", () => {
+      decreaseQuantity(item.producto.id);
+      cargarCarrito();
+    });
+
+    botonSumar.addEventListener("click", () => {
+      increaseQuantity(item.producto.id);
+      cargarCarrito();
+    });
+
+    botonEliminar.addEventListener("click", () => {
+      removeFromCart(item.producto.id);
+      cargarCarrito();
+    });
+
     contenedorCarrito.appendChild(div);
   });
 
   const total = getCartTotal(cart);
   totalCarrito.textContent = `$${total.toLocaleString()}`;
 };
+
 cargarCarrito();

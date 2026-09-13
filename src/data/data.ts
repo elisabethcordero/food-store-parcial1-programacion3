@@ -117,7 +117,7 @@ export const PRODUCTS: IProduct[] = [
   {
     id: 15,
     nombre: "Flan Casero",
-    descripcion: "Flan casero con dulce de leche y crema",
+    descripcion: "Flan casero con caramelo",
     precio: 6500,
     imagen: "/assets/flan_casero.webp",
     categoria: "Postres"

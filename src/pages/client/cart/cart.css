@@ -1,0 +1,105 @@
+.carrito-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.carrito-container h2 {
+    color: #3bac56;
+}
+
+.carrito-container h3 {
+    text-align: right;
+    font-size: 1.3rem;
+}
+
+#contenedor-carrito {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+#contenedor-carrito p {
+    text-align: center;
+    color: #666;
+}
+
+.carrito-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.carrito-item img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.carrito-item-info {
+    flex: 1;
+}
+
+.carrito-item-info h3 {
+    margin: 0 0 0.3rem;
+    text-align: left;
+}
+
+.precio-unitario {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.subtotal {
+    font-weight: bold;
+    min-width: 80px;
+    text-align: right;
+}
+
+.control-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.control-cantidad button {
+    background-color: #3bac56;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.control-cantidad button:hover {
+    background-color: #2f8c44;
+}
+
+.cantidad-numero {
+    font-weight: bold;
+    min-width: 18px;
+    text-align: center;
+}
+
+.btn-eliminar {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-eliminar:hover {
+    background-color: #c0392b;
+}
