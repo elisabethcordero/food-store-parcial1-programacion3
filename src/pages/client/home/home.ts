@@ -1,5 +1,4 @@
 import "./home.css";
-import type { IProduct } from "../../../types/product";
 import { PRODUCTS, getCategories } from "../../../data/data";
 import { logout } from "../../../utils/auth";
 import { addToCart } from "../../../utils/cart";
@@ -9,20 +8,26 @@ buttonLogout.addEventListener("click", () => {
   logout();
 });
 
-const cargarCategorias = (): void => {
-  const contenedorCategorias = document.getElementById("lista-categorias") as HTMLUListElement;
-  const categorias = getCategories();
-  categorias.forEach((categoria) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<a href="#">${categoria.nombre}</a>`;
-    contenedorCategorias.appendChild(li);
-  });
-};
-cargarCategorias();
+const contenedorProductos = document.getElementById("contenedor-productos") as HTMLElement;
+const inputBuscar = document.getElementById("buscarProducto") as HTMLInputElement;
+const formBuscar = document.getElementById("form-buscar") as HTMLFormElement;
+let categoriaActiva = "Todas";
 
-const cargarProductos = (): void => {
-  const contenedorProductos = document.getElementById("contenedor-productos") as HTMLElement;
-  PRODUCTS.forEach((producto: IProduct) => {
+const dibujarProductos = (): void => {
+  contenedorProductos.innerHTML = "";
+
+  const productosFiltrados = PRODUCTS.filter((producto) => {
+    const coincideCategoria = categoriaActiva === "Todas" || producto.categoria === categoriaActiva;
+    const coincideNombre = producto.nombre.toLowerCase().includes(inputBuscar.value.toLowerCase());
+    return coincideCategoria && coincideNombre;
+  });
+
+  if (productosFiltrados.length === 0) {
+    contenedorProductos.innerHTML = "<p>No se encontraron productos.</p>";
+    return;
+  }
+
+  productosFiltrados.forEach((producto) => {
     const article = document.createElement("article");
     article.classList.add("producto-card");
     article.innerHTML = `
@@ -41,4 +46,39 @@ const cargarProductos = (): void => {
     contenedorProductos.appendChild(article);
   });
 };
-cargarProductos();
+
+const cargarCategorias = (): void => {
+  const contenedorCategorias = document.getElementById("lista-categorias") as HTMLUListElement;
+
+  const liTodas = document.createElement("li");
+  liTodas.innerHTML = `<a href="#">Todas</a>`;
+  liTodas.addEventListener("click", (e) => {
+    e.preventDefault();
+    categoriaActiva = "Todas";
+    dibujarProductos();
+  });
+  contenedorCategorias.appendChild(liTodas);
+
+  const categorias = getCategories();
+  categorias.forEach((categoria) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<a href="#">${categoria.nombre}</a>`;
+    li.addEventListener("click", (e) => {
+      e.preventDefault();
+      categoriaActiva = categoria.nombre;
+      dibujarProductos();
+    });
+    contenedorCategorias.appendChild(li);
+  });
+};
+
+formBuscar.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
+
+inputBuscar.addEventListener("input", () => {
+  dibujarProductos();
+});
+
+cargarCategorias();
+dibujarProductos();
