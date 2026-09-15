@@ -20,6 +20,7 @@ const dibujarProductos = (): void => {
 
   contenedorProductos.innerHTML = "";
 
+  // Se queda solo con los productos que coinciden con la categoría activa y con el texto buscado
   const productosFiltrados = PRODUCTS.filter((producto) => {
     const coincideCategoria = categoriaActiva === "Todas" || producto.categoria === categoriaActiva;
     const coincideNombre = producto.nombre.toLowerCase().includes(inputBuscar.value.toLowerCase());
@@ -37,6 +38,7 @@ const dibujarProductos = (): void => {
 
     const cantidadEnCarrito = getCantidadEnCarrito(producto.id);
 
+    // Si el producto no está en el carrito muestra "Agregar"; si ya está, muestra cantidad y +/-
     const controlesCarrito =
       cantidadEnCarrito === 0
         ? `<button class="btn-agregar" data-id="${producto.id}">Agregar al carrito</button>`
@@ -85,6 +87,7 @@ const dibujarProductos = (): void => {
 const cargarCategorias = (): void => {
   const contenedorCategorias = document.getElementById("lista-categorias") as HTMLUListElement;
 
+  // Le saca la clase "activa" a todos los links y se la pone solo al que se clickeó
   const marcarActiva = (linkClickeado: HTMLAnchorElement): void => {
     const todosLosLinks = contenedorCategorias.querySelectorAll("a");
     todosLosLinks.forEach((link) => link.classList.remove("categoria-activa"));

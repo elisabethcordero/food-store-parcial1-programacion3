@@ -7,6 +7,7 @@ buttonLogout.addEventListener("click", () => {
   logout();
 });
 
+// Dibuja cada producto del carrito como una fila, con sus botones de cantidad y eliminar
 const cargarCarrito = (): void => {
   const contenedorCarrito = document.getElementById("contenedor-carrito") as HTMLElement;
   const totalCarrito = document.getElementById("total-carrito") as HTMLSpanElement;
@@ -61,6 +62,7 @@ const cargarCarrito = (): void => {
     contenedorCarrito.appendChild(div);
   });
 
+  // Se recalcula cada vez que se dibuja el carrito, para reflejar el cambio
   const total = getCartTotal(cart);
   totalCarrito.textContent = `$${total.toLocaleString()}`;
 };
